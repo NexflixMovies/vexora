@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PulseBoard — Analytics Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c2330;--border:rgba(255,255,255,0.08);
+  --blue:#3b82f6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a855f7;
+  --muted:rgba(255,255,255,0.45);--text:#e6edf3;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:240px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:100;transition:transform 0.3s;}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:20px 20px 0;}
+.logo-icon{width:36px;height:36px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.logo-text{font-size:17px;font-weight:800;}
+.sidebar-nav{flex:1;padding:24px 12px;}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:0 10px;margin:20px 0 8px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;transition:0.2s;text-decoration:none;}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:var(--text);}
+.nav-item.active{background:rgba(59,130,246,0.15);color:var(--blue);}
+.nav-item .icon{font-size:18px;width:20px;flex-shrink:0;}
+.nav-item .badge{margin-left:auto;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;}
+.sidebar-footer{padding:16px;}
+.user-card{background:var(--surface2);border-radius:12px;padding:14px;display:flex;align-items:center;gap:10px;}
+.user-av{width:36px;height:36px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
+.user-info strong{display:block;font-size:13px;font-weight:600;}
+.user-info span{font-size:11px;color:var(--muted);}
+.back-link{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;text-decoration:none;padding:10px 12px;border-radius:8px;margin-top:6px;transition:0.2s;}
+.back-link:hover{background:rgba(255,255,255,0.05);color:var(--text);}
+
+/* MAIN */
+.main{flex:1;margin-left:240px;min-height:100vh;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:99;height:60px;background:rgba(13,17,23,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-title{font-size:17px;font-weight:700;}
+.topbar-sub{font-size:13px;color:var(--muted);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.date-range{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;transition:0.2s;}
+.date-range:hover{border-color:var(--blue);}
+.export-btn{background:var(--blue);color:#fff;border:none;padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:0.3s;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px;}
+.export-btn:hover{background:#2563eb;}
+.menu-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;}
+
+/* CONTENT */
+.content{padding:28px 32px;}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;transition:0.3s;cursor:default;}
+.kpi-card:hover{border-color:rgba(255,255,255,0.15);transform:translateY(-2px);}
+.kpi-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.kpi-label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0.5px;}
+.kpi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.kpi-value{font-size:28px;font-weight:800;margin-bottom:6px;}
+.kpi-change{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;}
+.kpi-change.up{color:var(--green);}
+.kpi-change.down{color:var(--red);}
+.kpi-change .arrow{font-size:14px;}
+
+/* CHART CARDS */
+.charts-row{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:28px;}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.chart-title{font-size:15px;font-weight:700;}
+.chart-actions{display:flex;gap:6px;}
+.chart-tab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);background:transparent;border:none;font-family:'Inter',sans-serif;transition:0.2s;}
+.chart-tab.active,.chart-tab:hover{background:rgba(59,130,246,0.15);color:var(--blue);}
+
+/* BAR CHART */
+.bar-chart{height:200px;display:flex;align-items:flex-end;gap:8px;padding-bottom:28px;position:relative;}
+.bar-chart::before{content:'';position:absolute;left:0;right:0;bottom:28px;height:1px;background:var(--border);}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
+.bar{width:100%;border-radius:8px 8px 0 0;transition:height 1.2s cubic-bezier(0.4,0,0.2,1);position:relative;cursor:pointer;}
+.bar:hover{filter:brightness(1.2);}
+.bar-label{font-size:10px;color:var(--muted);position:absolute;bottom:-22px;white-space:nowrap;}
+.bar-value{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:var(--text);white-space:nowrap;opacity:0;transition:0.2s;}
+.bar:hover .bar-value{opacity:1;}
+
+/* DONUT CHART */
+.donut-wrap{display:flex;align-items:center;gap:24px;}
+.donut-svg{flex-shrink:0;}
+.donut-legend{flex:1;}
+.donut-item{display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer;}
+.donut-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.donut-item span{font-size:13px;color:var(--muted);}
+.donut-item strong{font-size:13px;margin-left:auto;}
+
+/* TABLE */
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:28px;}
+.table-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.table-title{font-size:15px;font-weight:700;}
+.table-search{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:200px;transition:0.3s;}
+.table-search:focus{border-color:var(--blue);}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:12px 20px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border);}
+tbody td{padding:14px 20px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.04);}
+tbody tr:hover td{background:rgba(255,255,255,0.02);}
+tbody tr:last-child td{border-bottom:none;}
+.status-pill{padding:4px 12px;border-radius:50px;font-size:11px;font-weight:700;}
+.status-paid{background:rgba(34,197,94,0.15);color:var(--green);}
+.status-pending{background:rgba(245,158,11,0.15);color:var(--amber);}
+.status-failed{background:rgba(239,68,68,0.15);color:var(--red);}
+.user-cell{display:flex;align-items:center;gap:10px;}
+.user-cell-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+
+/* BOTTOM ROW */
+.bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.mini-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;}
+.mini-card h4{font-size:15px;font-weight:700;margin-bottom:18px;}
+.activity-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.activity-item:last-child{border-bottom:none;}
+.act-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.act-info strong{display:block;font-size:13px;font-weight:600;}
+.act-info span{font-size:12px;color:var(--muted);}
+.act-time{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.2);}
+.goal-item{margin-bottom:16px;}
+.goal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.goal-header span{font-size:13px;font-weight:500;}
+.goal-header strong{font-size:13px;font-weight:700;color:var(--blue);}
+.goal-bar{height:6px;background:rgba(255,255,255,0.07);border-radius:6px;overflow:hidden;}
+.goal-fill{height:100%;border-radius:6px;transition:width 1.5s ease;}
+
+/* RESPONSIVE */
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){
+  .charts-row{grid-template-columns:1fr;}
+  .bottom-row{grid-template-columns:1fr;}
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .menu-toggle{display:block;}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:600px){
+  .content{padding:20px 16px;}
+  .topbar{padding:0 16px;}
+  .kpi-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .kpi-card{padding:16px;}
+  .kpi-value{font-size:22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div style="padding:20px 20px 0;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="logo-icon">📊</div>
+      <span class="logo-text">PulseBoard</span>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a class="nav-item active"><span class="icon">🏠</span> Dashboard</a>
+    <a class="nav-item"><span class="icon">📈</span> Analytics</a>
+    <a class="nav-item"><span class="icon">💰</span> Revenue <span class="badge">New</span></a>
+    <a class="nav-item"><span class="icon">🧾</span> Invoices</a>
+    <div class="nav-section">Management</div>
+    <a class="nav-item"><span class="icon">👥</span> Customers</a>
+    <a class="nav-item"><span class="icon">📦</span> Products</a>
+    <a class="nav-item"><span class="icon">📋</span> Orders <span class="badge">24</span></a>
+    <div class="nav-section">Settings</div>
+    <a class="nav-item"><span class="icon">⚙️</span> Settings</a>
+    <a class="nav-item"><span class="icon">🔐</span> Team Access</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-av">V</div>
+      <div class="user-info"><strong>Vexora Admin</strong><span>admin@vexora.in</span></div>
+    </div>
+    <a href="/" class="back-link">← Back to Portfolio</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div>
+        <div class="topbar-title">Dashboard Overview</div>
+        <div class="topbar-sub" id="liveTime"></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="date-range">📅 Last 30 Days</div>
+      <button class="export-btn" onclick="alert('Exporting report as PDF…')">⬇ Export</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Total Revenue</span>
+          <div class="kpi-icon" style="background:rgba(59,130,246,0.15);">💰</div>
+        </div>
+        <div class="kpi-value" id="kpiRev" style="color:var(--blue)">₹0</div>
+        <div class="kpi-change up"><span class="arrow">↑</span> 18.4% from last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Active Users</span>
+          <div class="kpi-icon" style="background:rgba(34,197,94,0.15);">👥</div>
+        </div>
+        <div class="kpi-value" id="kpiUsers" style="color:var(--green)">0</div>
+        <div class="kpi-change up"><span class="arrow">↑</span> 12.1% from last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Total Orders</span>
+          <div class="kpi-icon" style="background:rgba(245,158,11,0.15);">📦</div>
+        </div>
+        <div class="kpi-value" id="kpiOrders" style="color:var(--amber)">0</div>
+        <div class="kpi-change up"><span class="arrow">↑</span> 9.3% from last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Churn Rate</span>
+          <div class="kpi-icon" style="background:rgba(239,68,68,0.15);">📉</div>
+        </div>
+        <div class="kpi-value" id="kpiChurn" style="color:var(--red)">0%</div>
+        <div class="kpi-change down"><span class="arrow">↓</span> 2.1% improved</div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW -->
+    <div class="charts-row">
+      <!-- BAR CHART -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <span class="chart-title">Monthly Revenue</span>
+          <div class="chart-actions">
+            <button class="chart-tab active">6M</button>
+            <button class="chart-tab">1Y</button>
+            <button class="chart-tab">All</button>
+          </div>
+        </div>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+      <!-- DONUT -->
+      <div class="chart-card">
+        <div class="chart-header"><span class="chart-title">Revenue by Channel</span></div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" width="140" height="140" viewBox="0 0 140 140" id="donutSvg">
+            <circle cx="70" cy="70" r="54" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="22"/>
+          </svg>
+          <div class="donut-legend">
+            <div class="donut-item"><div class="donut-dot" style="background:#3b82f6"></div><span>Direct</span><strong>42%</strong></div>
+            <div class="donut-item"><div class="donut-dot" style="background:#22c55e"></div><span>Organic</span><strong>28%</strong></div>
+            <div class="donut-item"><div class="donut-dot" style="background:#f59e0b"></div><span>Referral</span><strong>18%</strong></div>
+            <div class="donut-item"><div class="donut-dot" style="background:#a855f7"></div><span>Paid Ads</span><strong>12%</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+      <div class="table-header">
+        <span class="table-title">Recent Transactions</span>
+        <input class="table-search" type="text" placeholder="Search transactions…" oninput="filterTable(this.value)">
+      </div>
+      <div style="overflow-x:auto;">
+        <table id="txTable">
+          <thead><tr><th>Customer</th><th>Plan</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><div class="user-cell"><div class="user-cell-av" style="background:#3b82f6">R</div>Rahul Verma</div></td><td>Pro Plan</td><td>₹2,999</td><td>19 Jun 2025</td><td><span class="status-pill status-paid">Paid</span></td></tr>
+            <tr><td><div class="user-cell"><div class="user-cell-av" style="background:#22c55e">S</div>Simran Kaur</div></td><td>Enterprise</td><td>₹9,999</td><td>18 Jun 2025</td><td><span class="status-pill status-paid">Paid</span></td></tr>
+            <tr><td><div class="user-cell"><div class="user-cell-av" style="background:#f59e0b">A</div>Amit Singh</div></td><td>Starter</td><td>₹999</td><td>18 Jun 2025</td><td><span class="status-pill status-pending">Pending</span></td></tr>
+            <tr><td><div class="user-cell"><div class="user-cell-av" style="background:#a855f7">P</div>Priya Nanda</div></td><td>Pro Plan</td><td>₹2,999</td><td>17 Jun 2025</td><td><span class="status-pill status-paid">Paid</span></td></tr>
+            <tr><td><div class="user-cell"><div class="user-cell-av" style="background:#ef4444">K</div>Kapil Dev</div></td><td>Enterprise</td><td>₹9,999</td><td>16 Jun 2025</td><td><span class="status-pill status-failed">Failed</span></td></tr>
+            <tr><td><div class="user-cell"><div class="user-cell-av" style="background:#06b6d4">N</div>Neha Sharma</div></td><td>Pro Plan</td><td>₹2,999</td><td>15 Jun 2025</td><td><span class="status-pill status-paid">Paid</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="bottom-row">
+      <!-- ACTIVITY -->
+      <div class="mini-card">
+        <h4>Recent Activity</h4>
+        <div class="activity-item"><div class="act-icon" style="background:rgba(59,130,246,0.15)">🧾</div><div class="act-info"><strong>New invoice #1048 created</strong><span>Pro Plan · ₹2,999</span></div><span class="act-time">2m ago</span></div>
+        <div class="activity-item"><div class="act-icon" style="background:rgba(34,197,94,0.15)">👤</div><div class="act-info"><strong>New user registered</strong><span>Aryan Sharma · aryan@example.com</span></div><span class="act-time">14m ago</span></div>
+        <div class="activity-item"><div class="act-icon" style="background:rgba(245,158,11,0.15)">⚠️</div><div class="act-info"><strong>Payment failed</strong><span>Kapil Dev · ₹9,999</span></div><span class="act-time">1h ago</span></div>
+        <div class="activity-item"><div class="act-icon" style="background:rgba(168,85,247,0.15)">📦</div><div class="act-info"><strong>Upgrade to Enterprise</strong><span>Simran Kaur · 3 seats added</span></div><span class="act-time">3h ago</span></div>
+        <div class="activity-item"><div class="act-icon" style="background:rgba(239,68,68,0.15)">🔑</div><div class="act-info"><strong>Password reset</strong><span>Priya Nanda · priya@example.com</span></div><span class="act-time">5h ago</span></div>
+      </div>
+      <!-- GOALS -->
+      <div class="mini-card">
+        <h4>Monthly Goals</h4>
+        <div class="goal-item"><div class="goal-header"><span>Revenue Target</span><strong>82%</strong></div><div class="goal-bar"><div class="goal-fill" style="width:0;background:var(--blue)" data-w="82"></div></div></div>
+        <div class="goal-item"><div class="goal-header"><span>New Signups</span><strong>67%</strong></div><div class="goal-bar"><div class="goal-fill" style="width:0;background:var(--green)" data-w="67"></div></div></div>
+        <div class="goal-item"><div class="goal-header"><span>Upsells</span><strong>54%</strong></div><div class="goal-bar"><div class="goal-fill" style="width:0;background:var(--amber)" data-w="54"></div></div></div>
+        <div class="goal-item"><div class="goal-header"><span>Support Resolved</span><strong>94%</strong></div><div class="goal-bar"><div class="goal-fill" style="width:0;background:var(--purple)" data-w="94"></div></div></div>
+        <div class="goal-item"><div class="goal-header"><span>Churn Prevention</span><strong>78%</strong></div><div class="goal-bar"><div class="goal-fill" style="width:0;background:#06b6d4" data-w="78"></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* Live time */
+function updateTime(){
+  const now=new Date();
+  document.getElementById('liveTime').textContent=now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' · '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+}
+updateTime();setInterval(updateTime,10000);
+
+/* KPI counters */
+function countTo(el,target,prefix='',suffix=''){
+  let n=0;const step=Math.ceil(target/60);
+  const timer=setInterval(()=>{n=Math.min(n+step,target);el.textContent=prefix+n.toLocaleString('en-IN')+suffix;if(n>=target)clearInterval(timer);},24);
+}
+setTimeout(()=>{
+  countTo(document.getElementById('kpiRev'),847320,'₹');
+  countTo(document.getElementById('kpiUsers'),4218);
+  countTo(document.getElementById('kpiOrders'),1382);
+  countTo(document.getElementById('kpiChurn'),3,'','%');
+},400);
+
+/* Bar chart */
+const months=['Jan','Feb','Mar','Apr','May','Jun'];
+const vals=[42000,58000,51000,73000,68000,91000];
+const maxVal=Math.max(...vals);
+const barChart=document.getElementById('barChart');
+const colors=['#3b82f6','#6366f1','#8b5cf6','#3b82f6','#6366f1','#22c55e'];
+months.forEach((m,i)=>{
+  const wrap=document.createElement('div');wrap.className='bar-wrap';
+  const bar=document.createElement('div');bar.className='bar';
+  bar.style.cssText=`height:0;background:${colors[i]};`;
+  bar.innerHTML=`<span class="bar-value">₹${(vals[i]/1000).toFixed(0)}K</span>`;
+  const label=document.createElement('span');label.className='bar-label';label.textContent=m;
+  bar.appendChild(label);wrap.appendChild(bar);barChart.appendChild(wrap);
+  setTimeout(()=>{bar.style.height=Math.round((vals[i]/maxVal)*160)+'px';},300+i*80);
+});
+
+/* Donut */
+const svg=document.getElementById('donutSvg');
+const slices=[{pct:42,color:'#3b82f6'},{pct:28,color:'#22c55e'},{pct:18,color:'#f59e0b'},{pct:12,color:'#a855f7'}];
+const r=54,cx=70,cy=70,circ=2*Math.PI*r;
+let offset=0;
+slices.forEach((s,i)=>{
+  const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  const dash=(s.pct/100)*circ;
+  circle.setAttribute('cx',cx);circle.setAttribute('cy',cy);circle.setAttribute('r',r);
+  circle.setAttribute('fill','none');circle.setAttribute('stroke',s.color);circle.setAttribute('stroke-width','22');
+  circle.setAttribute('stroke-dasharray',`0 ${circ}`);
+  circle.setAttribute('stroke-dashoffset',-(offset/100*circ-circ/4));
+  circle.style.transition=`stroke-dasharray 1.2s ease ${i*0.2+0.4}s`;
+  svg.appendChild(circle);
+  setTimeout(()=>{circle.setAttribute('stroke-dasharray',`${dash} ${circ-dash}`);},50);
+  offset+=s.pct;
+});
+
+/* Goals animation */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.goal-fill').forEach(b=>{b.style.width=b.dataset.w+'%';});}
+  });
+},{threshold:0.3});
+document.querySelectorAll('.mini-card').forEach(c=>observer.observe(c));
+
+/* Table search */
+function filterTable(q){
+  document.querySelectorAll('#txTable tbody tr').forEach(row=>{
+    row.style.display=row.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
+  });
+}
+
+/* Sidebar toggle */
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+
+/* Chart tabs */
+document.querySelectorAll('.chart-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    t.closest('.chart-actions').querySelectorAll('.chart-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
