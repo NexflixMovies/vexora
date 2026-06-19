@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vexora — Web Design Agency</title>
+<title>Vexora — Web Design Agency · Patiala</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -13,127 +13,225 @@
   --navy2:#0f1f3d;
   --amber:#F5A623;
   --amber2:#e8931a;
-  --white:#ffffff;
-  --light:#f8f9fc;
+  --amber3:rgba(245,166,35,0.08);
   --border:rgba(255,255,255,0.08);
-  --text-muted:rgba(255,255,255,0.5);
-  --card-bg:rgba(255,255,255,0.04);
+  --muted:rgba(255,255,255,0.5);
+  --card:rgba(255,255,255,0.03);
 }
 html{scroll-behavior:smooth;}
 body{background:var(--navy);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.6;overflow-x:hidden;}
 
-/* =========== NAV =========== */
-nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(10,22,40,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+/* ====== SCROLL REVEAL ====== */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+.stagger:nth-child(1){transition-delay:0s;}
+.stagger:nth-child(2){transition-delay:0.1s;}
+.stagger:nth-child(3){transition-delay:0.2s;}
+.stagger:nth-child(4){transition-delay:0.3s;}
+.stagger:nth-child(5){transition-delay:0.4s;}
+.stagger:nth-child(6){transition-delay:0.5s;}
+.stagger:nth-child(7){transition-delay:0.6s;}
+.stagger:nth-child(8){transition-delay:0.7s;}
+.stagger:nth-child(9){transition-delay:0.8s;}
+
+/* ====== NAV ====== */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(10,22,40,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:0.3s;}
+nav.scrolled{box-shadow:0 4px 32px rgba(0,0,0,0.4);}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.logo-mark{width:36px;height:36px;background:var(--amber);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark{width:36px;height:36px;background:var(--amber);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s;}
+.nav-logo:hover .logo-mark{transform:rotate(8deg) scale(1.08);}
 .logo-mark svg{width:22px;height:22px;}
 .logo-text{font-size:20px;font-weight:800;color:#fff;letter-spacing:1px;}
 .nav-links{display:flex;gap:32px;list-style:none;}
-.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:14px;font-weight:500;transition:0.2s;}
+.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:14px;font-weight:500;transition:0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--amber);border-radius:2px;transition:width 0.3s;}
 .nav-links a:hover{color:var(--amber);}
-.nav-cta{background:var(--amber);color:var(--navy);padding:10px 24px;border-radius:50px;font-size:14px;font-weight:700;text-decoration:none;transition:0.3s;white-space:nowrap;}
-.nav-cta:hover{background:var(--amber2);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{background:var(--amber);color:var(--navy);padding:10px 24px;border-radius:50px;font-size:14px;font-weight:700;text-decoration:none;transition:0.3s;white-space:nowrap;box-shadow:0 4px 20px rgba(245,166,35,0.3);}
+.nav-cta:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,166,35,0.4);}
+.nav-cta:active{transform:translateY(0);}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
 .hamburger span{width:24px;height:2px;background:#fff;border-radius:2px;transition:0.3s;display:block;}
 .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
 .hamburger.open span:nth-child(2){opacity:0;}
 .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
-.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);z-index:998;padding:24px 24px 32px;flex-direction:column;gap:0;}
+.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);z-index:998;padding:24px 24px 32px;flex-direction:column;}
 .mobile-menu.open{display:flex;}
 .mobile-menu a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:16px;font-weight:500;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
-.mobile-menu a:last-child{margin-top:16px;background:var(--amber);color:var(--navy);text-align:center;border-radius:12px;font-weight:700;border:none;}
+.mobile-menu a:last-child{margin-top:16px;background:var(--amber);color:var(--navy);text-align:center;border-radius:12px;font-weight:700;border:none;padding:14px;}
 
-/* =========== HERO =========== */
+/* ====== HERO ====== */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 20px 60px;position:relative;overflow:hidden;}
-.hero-glow{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(245,166,35,0.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
-.hero-glow2{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,0.08) 0%,transparent 70%);top:20%;right:10%;pointer-events:none;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);color:var(--amber);padding:7px 18px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;}
-.hero-badge::before{content:'';width:6px;height:6px;background:var(--amber);border-radius:50%;animation:pulse 2s ease infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
-.hero h1{font-size:clamp(36px,6vw,76px);font-weight:800;line-height:1.08;margin-bottom:22px;max-width:860px;}
-.hero h1 .grad{background:linear-gradient(135deg,var(--amber),#f7c96a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero p{color:rgba(255,255,255,0.55);font-size:clamp(15px,2vw,19px);max-width:580px;line-height:1.7;margin-bottom:40px;}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:64px;}
-.btn-amber{background:var(--amber);color:var(--navy);padding:14px 32px;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;transition:0.3s;display:inline-flex;align-items:center;gap:8px;}
-.btn-amber:hover{background:var(--amber2);transform:translateY(-2px);}
-.btn-ghost{border:1px solid rgba(255,255,255,0.2);color:#fff;padding:14px 32px;border-radius:50px;font-size:15px;font-weight:600;text-decoration:none;transition:0.3s;}
-.btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
-.hero-stats{display:flex;gap:48px;justify-content:center;flex-wrap:wrap;}
+.hero-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(0);}10%{opacity:1;}90%{opacity:0.5;}100%{opacity:0;transform:translateY(-100vh) scale(1.2);}}
+.hero-glow{position:absolute;width:800px;height:800px;background:radial-gradient(circle,rgba(245,166,35,0.1) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:pulse-glow 4s ease-in-out infinite;}
+@keyframes pulse-glow{0%,100%{opacity:0.8;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}}
+.hero-glow2{position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,0.07) 0%,transparent 70%);top:15%;right:5%;pointer-events:none;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.3);color:var(--amber);padding:8px 20px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:28px;}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--amber);border-radius:50%;animation:blink 2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.3;transform:scale(0.6);}}
+.hero h1{font-size:clamp(36px,6vw,78px);font-weight:800;line-height:1.06;margin-bottom:24px;max-width:900px;}
+.hero h1 .grad{background:linear-gradient(135deg,var(--amber) 30%,#f7c96a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:rgba(255,255,255,0.55);font-size:clamp(15px,2vw,19px);max-width:600px;line-height:1.8;margin-bottom:44px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:72px;}
+.btn-amber{background:var(--amber);color:var(--navy);padding:15px 34px;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;transition:0.3s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 24px rgba(245,166,35,0.35);}
+.btn-amber:hover{background:var(--amber2);transform:translateY(-3px);box-shadow:0 10px 36px rgba(245,166,35,0.45);}
+.btn-amber:active{transform:translateY(-1px);}
+.btn-ghost{border:1px solid rgba(255,255,255,0.2);color:#fff;padding:15px 34px;border-radius:50px;font-size:15px;font-weight:600;text-decoration:none;transition:0.3s;}
+.btn-ghost:hover{border-color:var(--amber);color:var(--amber);background:rgba(245,166,35,0.05);}
+.hero-stats{display:flex;gap:56px;justify-content:center;flex-wrap:wrap;}
 .hstat{text-align:center;}
-.hstat strong{display:block;font-size:clamp(28px,4vw,42px);font-weight:800;color:var(--amber);}
-.hstat span{font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:1.5px;text-transform:uppercase;}
+.hstat strong{display:block;font-size:clamp(30px,4vw,46px);font-weight:800;color:var(--amber);}
+.hstat span{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;text-transform:uppercase;}
 
-/* =========== PROJECTS =========== */
-.projects{padding:80px 20px;max-width:1200px;margin:0 auto;}
+/* ====== SECTION COMMONS ====== */
 .section-label{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
-.section-title{font-size:clamp(28px,4vw,44px);font-weight:800;margin-bottom:8px;}
-.section-sub{color:rgba(255,255,255,0.45);font-size:15px;margin-bottom:48px;}
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;}
+.section-title{font-size:clamp(28px,4vw,46px);font-weight:800;margin-bottom:8px;}
+.section-sub{color:rgba(255,255,255,0.4);font-size:15px;margin-bottom:52px;}
+
+/* ====== TECH MARQUEE ====== */
+.tech-bar{background:rgba(245,166,35,0.06);border-top:1px solid rgba(245,166,35,0.1);border-bottom:1px solid rgba(245,166,35,0.1);padding:16px 0;overflow:hidden;white-space:nowrap;}
+.tech-bar-inner{display:inline-flex;animation:scroll-tech 28s linear infinite;gap:0;}
+.tech-bar-inner:hover{animation-play-state:paused;}
+.titem{display:inline-flex;align-items:center;gap:10px;padding:0 32px;color:rgba(255,255,255,0.45);font-size:13px;font-weight:600;letter-spacing:1px;}
+.titem span{color:var(--amber);font-size:18px;}
+@keyframes scroll-tech{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ====== PROJECTS ====== */
+.projects{padding:96px 20px;max-width:1280px;margin:0 auto;}
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:44px;}
+.ftab{padding:9px 22px;border-radius:50px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.5);font-size:13px;font-weight:600;cursor:pointer;transition:0.25s;font-family:'Plus Jakarta Sans',sans-serif;}
+.ftab:hover{border-color:rgba(245,166,35,0.4);color:rgba(245,166,35,0.8);}
+.ftab:active{transform:scale(0.96);}
+.ftab.active{background:var(--amber);border-color:var(--amber);color:var(--navy);}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:24px;}
 
 /* PROJECT CARD */
-.pcard{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;overflow:hidden;transition:0.3s;display:flex;flex-direction:column;}
-.pcard:hover{transform:translateY(-6px);border-color:rgba(245,166,35,0.25);box-shadow:0 20px 60px rgba(0,0,0,0.4);}
-.pcard-thumb{height:200px;position:relative;overflow:hidden;}
-.pcard-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 0.5s ease;}
-.pcard:hover .pcard-thumb img{transform:scale(1.05);}
-.pcard-thumb .price-tag{position:absolute;top:14px;right:14px;background:var(--amber);color:var(--navy);padding:5px 14px;border-radius:50px;font-size:12px;font-weight:800;z-index:2;}
-.pcard-thumb .badge-tag{position:absolute;top:14px;left:14px;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:4px 12px;border-radius:50px;font-size:11px;font-weight:600;z-index:2;}
+.pcard{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;overflow:hidden;transition:transform 0.35s ease,border-color 0.35s,box-shadow 0.35s;display:flex;flex-direction:column;}
+.pcard:hover{transform:translateY(-8px);border-color:rgba(245,166,35,0.3);box-shadow:0 24px 64px rgba(0,0,0,0.45),0 0 0 1px rgba(245,166,35,0.1);}
+.pcard:focus-within{border-color:rgba(245,166,35,0.5);outline:none;}
+.pcard-thumb{height:210px;position:relative;overflow:hidden;}
+.pcard-thumb img,.pcard-thumb .thumb-placeholder{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 0.55s ease;}
+.thumb-placeholder{display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(99,102,241,0.1));}
+.pcard:hover .pcard-thumb img,.pcard:hover .thumb-placeholder{transform:scale(1.07);}
+.price-tag{position:absolute;top:14px;right:14px;background:var(--amber);color:var(--navy);padding:5px 14px;border-radius:50px;font-size:12px;font-weight:800;z-index:2;}
+.badge-tag{position:absolute;top:14px;left:14px;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:5px 13px;border-radius:50px;font-size:11px;font-weight:600;z-index:2;}
+.badge-tag.enterprise{background:rgba(99,102,241,0.3);border-color:rgba(99,102,241,0.5);color:#a5b4fc;}
+.badge-tag.premium{background:rgba(245,166,35,0.2);border-color:rgba(245,166,35,0.4);color:var(--amber);}
+
+/* Feature chips on hover */
+.pcard-features{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,22,40,0.96) 0%,rgba(10,22,40,0.7) 60%,transparent 100%);opacity:0;transition:opacity 0.35s;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;gap:6px;z-index:3;}
+.pcard:hover .pcard-features{opacity:1;}
+.feat-list{display:flex;flex-wrap:wrap;gap:5px;}
+.feat{background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);color:var(--amber);padding:3px 10px;border-radius:50px;font-size:11px;font-weight:600;}
+
 .pcard-body{padding:22px 24px;flex:1;display:flex;flex-direction:column;}
-.pcard-body h3{font-size:18px;font-weight:700;margin-bottom:8px;}
-.pcard-body p{color:rgba(255,255,255,0.5);font-size:13px;line-height:1.6;margin-bottom:16px;flex:1;}
+.pcard-body h3{font-size:18px;font-weight:700;margin-bottom:8px;transition:color 0.2s;}
+.pcard:hover .pcard-body h3{color:var(--amber);}
+.pcard-body p{color:rgba(255,255,255,0.48);font-size:13px;line-height:1.65;margin-bottom:16px;flex:1;}
 .tech-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
-.ttag{background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);color:rgba(245,166,35,0.8);padding:3px 11px;border-radius:50px;font-size:11px;font-weight:600;}
-.pcard-link{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);color:var(--amber);padding:11px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;transition:0.3s;cursor:pointer;}
+.ttag{background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.18);color:rgba(245,166,35,0.75);padding:3px 11px;border-radius:50px;font-size:11px;font-weight:600;transition:0.2s;}
+.pcard:hover .ttag{background:rgba(245,166,35,0.14);border-color:rgba(245,166,35,0.3);}
+.pcard-link{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);color:var(--amber);padding:12px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;transition:0.3s;cursor:pointer;}
 .pcard-link:hover{background:var(--amber);color:var(--navy);}
+.pcard-link:active{transform:scale(0.97);}
+.pcard-link:focus{outline:2px solid var(--amber);outline-offset:2px;}
 
-/* =========== SERVICES =========== */
-.services{background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:80px 20px;}
+/* card hidden */
+.pcard.hidden{display:none;}
+
+/* ====== SERVICES ====== */
+.services{background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:96px 20px;}
 .services-inner{max-width:1100px;margin:0 auto;}
-.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;}
-.scard{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px;transition:0.3s;}
-.scard:hover{border-color:rgba(245,166,35,0.2);background:rgba(245,166,35,0.04);}
-.scard-icon{width:48px;height:48px;background:rgba(245,166,35,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;}
+.scard{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:30px;transition:0.3s;cursor:default;position:relative;overflow:hidden;}
+.scard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0,rgba(245,166,35,0.06),transparent 70%);opacity:0;transition:opacity 0.4s;}
+.scard:hover::before{opacity:1;}
+.scard:hover{border-color:rgba(245,166,35,0.25);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3);}
+.scard-icon{width:50px;height:50px;background:rgba(245,166,35,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px;transition:transform 0.3s;}
+.scard:hover .scard-icon{transform:scale(1.1) rotate(4deg);}
 .scard h3{font-size:17px;font-weight:700;margin-bottom:8px;}
-.scard p{color:rgba(255,255,255,0.45);font-size:13px;line-height:1.6;margin-bottom:14px;}
-.scard-price{color:var(--amber);font-size:15px;font-weight:700;}
+.scard p{color:rgba(255,255,255,0.42);font-size:13px;line-height:1.65;margin-bottom:16px;}
+.scard-price{color:var(--amber);font-size:16px;font-weight:800;}
+.scard-features-list{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:6px;}
+.scard-features-list li{font-size:12px;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:7px;}
+.scard-features-list li::before{content:'✓';color:var(--amber);font-weight:700;flex-shrink:0;}
 
-/* =========== WHY =========== */
-.why{padding:80px 20px;max-width:1100px;margin:0 auto;}
+/* ====== SKILLS SECTION ====== */
+.skills-section{padding:96px 20px;max-width:1100px;margin:0 auto;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
+.skill-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:24px;transition:0.3s;text-align:center;}
+.skill-card:hover{border-color:rgba(245,166,35,0.3);transform:translateY(-4px);background:rgba(245,166,35,0.04);}
+.skill-icon{font-size:32px;margin-bottom:12px;display:block;}
+.skill-card h4{font-size:14px;font-weight:700;margin-bottom:10px;}
+.skill-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;}
+.skill-fill{height:100%;background:linear-gradient(90deg,var(--amber),#f7c96a);border-radius:4px;width:0;transition:width 1.4s ease;}
+
+/* ====== WHY ====== */
+.why{padding:96px 20px;max-width:1100px;margin:0 auto;}
 .why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
-.why-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;display:flex;gap:16px;}
-.why-num{font-size:36px;font-weight:800;color:rgba(245,166,35,0.2);line-height:1;flex-shrink:0;}
-.why-card h4{font-size:16px;font-weight:700;margin-bottom:6px;}
-.why-card p{color:rgba(255,255,255,0.45);font-size:13px;line-height:1.6;}
+.why-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;display:flex;gap:16px;transition:0.3s;}
+.why-card:hover{border-color:rgba(245,166,35,0.2);background:rgba(245,166,35,0.03);transform:translateX(4px);}
+.why-num{font-size:36px;font-weight:800;color:rgba(245,166,35,0.18);line-height:1;flex-shrink:0;}
+.why-card h4{font-size:15px;font-weight:700;margin-bottom:6px;}
+.why-card p{color:rgba(255,255,255,0.42);font-size:13px;line-height:1.65;}
 
-/* =========== CTA =========== */
-.cta{padding:80px 20px;text-align:center;}
-.cta-box{max-width:680px;margin:0 auto;background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(245,166,35,0.04));border:1px solid rgba(245,166,35,0.2);border-radius:24px;padding:60px 40px;}
-.cta-box h2{font-size:clamp(26px,4vw,42px);font-weight:800;margin-bottom:16px;}
-.cta-box p{color:rgba(255,255,255,0.5);font-size:16px;margin-bottom:36px;line-height:1.7;}
+/* ====== TESTIMONIALS ====== */
+.testimonials{padding:96px 20px;background:rgba(255,255,255,0.015);border-top:1px solid rgba(255,255,255,0.06);}
+.testimonials-inner{max-width:1100px;margin:0 auto;}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+.tcard{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:28px;transition:0.3s;}
+.tcard:hover{border-color:rgba(245,166,35,0.2);transform:translateY(-4px);}
+.tcard-stars{color:var(--amber);font-size:14px;margin-bottom:14px;letter-spacing:2px;}
+.tcard p{color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;margin-bottom:20px;font-style:italic;}
+.tcard-author{display:flex;align-items:center;gap:12px;}
+.tcard-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--amber),#f7c96a);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--navy);flex-shrink:0;}
+.tcard-author strong{display:block;font-size:14px;font-weight:700;}
+.tcard-author span{font-size:12px;color:rgba(255,255,255,0.35);}
+
+/* ====== CTA ====== */
+.cta{padding:96px 20px;text-align:center;}
+.cta-box{max-width:720px;margin:0 auto;background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(245,166,35,0.03));border:1px solid rgba(245,166,35,0.2);border-radius:28px;padding:64px 48px;position:relative;overflow:hidden;}
+.cta-box::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(245,166,35,0.08),transparent);pointer-events:none;}
+.cta-box h2{font-size:clamp(26px,4vw,44px);font-weight:800;margin-bottom:16px;}
+.cta-box p{color:rgba(255,255,255,0.5);font-size:16px;margin-bottom:40px;line-height:1.8;}
 .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.cta-note{color:rgba(255,255,255,0.2);font-size:12px;margin-top:24px;letter-spacing:0.5px;}
 
-/* =========== FOOTER =========== */
-footer{background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.06);padding:40px 20px;}
-.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
-.footer-logo{display:flex;align-items:center;gap:10px;}
-.footer-logo .logo-text{font-size:18px;font-weight:800;}
-.footer-links{display:flex;gap:24px;flex-wrap:wrap;}
-.footer-links a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:13px;transition:0.2s;}
-.footer-links a:hover{color:var(--amber);}
-.footer-copy{color:rgba(255,255,255,0.25);font-size:12px;width:100%;text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.04);}
+/* ====== FOOTER ====== */
+footer{background:rgba(0,0,0,0.35);border-top:1px solid rgba(255,255,255,0.06);padding:48px 20px 32px;}
+.footer-inner{max-width:1100px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:48px;margin-bottom:40px;}
+.footer-brand .logo-text{font-size:18px;font-weight:800;}
+.footer-brand p{color:rgba(255,255,255,0.35);font-size:13px;margin-top:14px;max-width:280px;line-height:1.7;}
+.footer-col h5{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:16px;}
+.footer-col a{display:block;color:rgba(255,255,255,0.45);text-decoration:none;font-size:13px;margin-bottom:10px;transition:0.2s;}
+.footer-col a:hover{color:var(--amber);}
+.footer-copy{border-top:1px solid rgba(255,255,255,0.05);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-copy p{color:rgba(255,255,255,0.2);font-size:12px;}
 .footer-copy a{color:var(--amber);text-decoration:none;}
 
-/* =========== RESPONSIVE =========== */
+/* ====== RESPONSIVE ====== */
+@media(max-width:1024px){.footer-top{grid-template-columns:1fr 1fr;}}
 @media(max-width:900px){
   nav{padding:0 20px;}
   .nav-links,.nav-cta{display:none;}
   .hamburger{display:flex;}
 }
+@media(max-width:768px){
+  .footer-top{grid-template-columns:1fr;}
+  .footer-col:not(.footer-brand){display:none;}
+  .footer-copy{justify-content:center;text-align:center;}
+}
 @media(max-width:600px){
   .hero{padding:90px 16px 60px;}
   .hero-stats{gap:28px;}
-  .hstat strong{font-size:28px;}
-  .projects,.why{padding:60px 16px;}
+  .projects,.why,.skills-section,.testimonials-inner{padding:60px 16px;}
   .services{padding:60px 16px;}
   .cta{padding:60px 16px;}
   .cta-box{padding:40px 24px;}
@@ -144,7 +242,7 @@ footer{background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.06);pa
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="navbar">
   <a class="nav-logo" href="/">
     <div class="logo-mark">
       <svg viewBox="0 0 40 40" fill="none">
@@ -156,18 +254,20 @@ footer{background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.06);pa
   </a>
   <ul class="nav-links">
     <li><a href="#projects">Work</a></li>
-    <li><a href="#services">Services</a></li>
+    <li><a href="#services">Packages</a></li>
+    <li><a href="#skills">Skills</a></li>
     <li><a href="#why">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="https://wa.me/918264157603" target="_blank" class="nav-cta">WhatsApp Us</a>
+  <a href="https://wa.me/918264157603" target="_blank" class="nav-cta">💬 WhatsApp Us</a>
   <div class="hamburger" id="hamburger" onclick="toggleNav()">
     <span></span><span></span><span></span>
   </div>
 </nav>
 <div class="mobile-menu" id="mobileNav">
   <a href="#projects" onclick="closeNav()">Our Work</a>
-  <a href="#services" onclick="closeNav()">Services</a>
+  <a href="#services" onclick="closeNav()">Packages</a>
+  <a href="#skills" onclick="closeNav()">Skills</a>
   <a href="#why" onclick="closeNav()">About</a>
   <a href="https://wa.me/918264157603" target="_blank" onclick="closeNav()">💬 WhatsApp Us</a>
 </div>
@@ -176,140 +276,291 @@ footer{background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.06);pa
 <section class="hero">
   <div class="hero-glow"></div>
   <div class="hero-glow2"></div>
-  <div class="hero-badge">Web Design Agency · Patiala</div>
-  <h1>We Build Websites That <span class="grad">Grow Your Business</span></h1>
-  <p>Premium websites, stunning UI, and mobile-first design — crafted for businesses, creators, and brands ready to make an impact online.</p>
-  <div class="hero-btns">
+  <div class="hero-particles" id="particles"></div>
+
+  <div class="hero-badge reveal">Web Design Agency · Patiala, Punjab</div>
+  <h1 class="reveal" style="transition-delay:0.1s">We Build Websites That <span class="grad">Grow Your Business</span></h1>
+  <p class="reveal" style="transition-delay:0.2s">Full-stack websites, premium UI, and mobile-first design — from simple landing pages to complex platforms with login, payments, and databases.</p>
+  <div class="hero-btns reveal" style="transition-delay:0.3s">
     <a href="#projects" class="btn-amber">View Our Work ↓</a>
     <a href="https://wa.me/918264157603" target="_blank" class="btn-ghost">Get a Free Quote</a>
   </div>
-  <div class="hero-stats">
-    <div class="hstat"><strong>50+</strong><span>Projects Done</span></div>
-    <div class="hstat"><strong>100%</strong><span>Mobile Ready</span></div>
-    <div class="hstat"><strong>48hr</strong><span>Delivery</span></div>
-    <div class="hstat"><strong>4.9★</strong><span>Rating</span></div>
+  <div class="hero-stats reveal" style="transition-delay:0.4s">
+    <div class="hstat"><strong class="counter" data-target="50">0</strong><span>Projects Done</span></div>
+    <div class="hstat"><strong class="counter" data-target="100">0</strong><span>Mobile Ready</span></div>
+    <div class="hstat"><strong>48<span style="font-size:0.6em">hr</span></strong><span>Avg Delivery</span></div>
+    <div class="hstat"><strong>4.9<span style="font-size:0.6em">★</span></strong><span>Rating</span></div>
   </div>
 </section>
 
+<!-- TECH BAR -->
+<div class="tech-bar">
+  <div class="tech-bar-inner">
+    <div class="titem"><span>⚛️</span> React.js</div>
+    <div class="titem"><span>🟢</span> Node.js</div>
+    <div class="titem"><span>🎨</span> Tailwind CSS</div>
+    <div class="titem"><span>🗄️</span> PostgreSQL</div>
+    <div class="titem"><span>⚡</span> GSAP Animations</div>
+    <div class="titem"><span>📱</span> Responsive Design</div>
+    <div class="titem"><span>🔌</span> REST API</div>
+    <div class="titem"><span>🏪</span> E-Commerce</div>
+    <div class="titem"><span>🔐</span> Auth Systems</div>
+    <div class="titem"><span>🚀</span> Express.js</div>
+    <div class="titem"><span>⚛️</span> React.js</div>
+    <div class="titem"><span>🟢</span> Node.js</div>
+    <div class="titem"><span>🎨</span> Tailwind CSS</div>
+    <div class="titem"><span>🗄️</span> PostgreSQL</div>
+    <div class="titem"><span>⚡</span> GSAP Animations</div>
+    <div class="titem"><span>📱</span> Responsive Design</div>
+    <div class="titem"><span>🔌</span> REST API</div>
+    <div class="titem"><span>🏪</span> E-Commerce</div>
+    <div class="titem"><span>🔐</span> Auth Systems</div>
+    <div class="titem"><span>🚀</span> Express.js</div>
+  </div>
+</div>
+
 <!-- PROJECTS -->
 <section class="projects" id="projects">
-  <div class="section-label">Portfolio</div>
-  <h2 class="section-title">Our Work</h2>
-  <p class="section-sub">Real websites we design — click any to see a live preview.</p>
+  <div class="reveal"><div class="section-label">Portfolio</div></div>
+  <h2 class="section-title reveal" style="transition-delay:0.05s">Real Projects We've Built</h2>
+  <p class="section-sub reveal" style="transition-delay:0.1s">From ₹2,999 starter sites to ₹18,000 full-stack platforms — every project custom-built, never a template.</p>
+
+  <div class="filter-tabs reveal" style="transition-delay:0.15s">
+    <button class="ftab active" onclick="filterCards('all',this)">All Projects</button>
+    <button class="ftab" onclick="filterCards('starter',this)">Starter</button>
+    <button class="ftab" onclick="filterCards('standard',this)">Standard</button>
+    <button class="ftab" onclick="filterCards('professional',this)">Professional</button>
+    <button class="ftab" onclick="filterCards('enterprise',this)">Enterprise</button>
+  </div>
+
   <div class="projects-grid">
 
-    <!-- ₹2,999 -->
-    <div class="pcard">
+    <!-- 1. FURNITURE PLATFORM — ₹14,000 Enterprise -->
+    <div class="pcard stagger reveal" data-tier="enterprise">
       <div class="pcard-thumb">
-        <img src="/preview-cafe.jpg" alt="Brew & Bloom Café Website Preview">
-        <span class="price-tag">₹2,999</span>
-        <span class="badge-tag">Starter</span>
+        <img src="img/woodnest-hero.png" alt="WoodNest Furniture Platform">
+        <span class="price-tag">₹14,000</span>
+        <span class="badge-tag enterprise">Enterprise</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">Search & Filter</span>
+            <span class="feat">Add to Cart</span>
+            <span class="feat">Checkout</span>
+            <span class="feat">User Login</span>
+            <span class="feat">Admin Panel</span>
+            <span class="feat">Database</span>
+          </div>
+        </div>
       </div>
       <div class="pcard-body">
-        <h3>Brew & Bloom Café</h3>
-        <p>Beautiful café landing page with interactive menu tabs, contact form, and smooth scroll navigation. Perfect for restaurants, cafés, and food businesses.</p>
+        <h3>WoodNest — Furniture Platform</h3>
+        <p>Full-stack furniture e-commerce platform with product search, category filters, add to cart, secure checkout, user accounts, and a complete admin dashboard to manage inventory.</p>
         <div class="tech-tags">
-          <span class="ttag">HTML</span><span class="ttag">CSS</span><span class="ttag">Responsive</span>
+          <span class="ttag">React.js</span><span class="ttag">Node.js</span><span class="ttag">PostgreSQL</span><span class="ttag">Cart System</span><span class="ttag">Auth</span><span class="ttag">Tailwind</span>
         </div>
-        <a href="/project-cafe.html" class="pcard-link" target="_blank">View Live Demo →</a>
+        <a class="pcard-link">View Live Demo →</a>
       </div>
     </div>
 
-    <div class="pcard">
+    <!-- 2. REAL ESTATE — ₹12,000 Enterprise -->
+    <div class="pcard stagger reveal" data-tier="enterprise">
       <div class="pcard-thumb">
-        <img src="/preview-portfolio.jpg" alt="Personal Portfolio Website Preview">
-        <span class="price-tag">₹2,999</span>
-        <span class="badge-tag">Starter</span>
+        <img src="img/nestify-hero.png" alt="Nestify Real Estate">
+        <span class="price-tag">₹12,000</span>
+        <span class="badge-tag enterprise">Enterprise</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">Property Search</span>
+            <span class="feat">Advanced Filters</span>
+            <span class="feat">Contact Agent</span>
+            <span class="feat">Photo Gallery</span>
+            <span class="feat">Map View</span>
+          </div>
+        </div>
       </div>
       <div class="pcard-body">
-        <h3>Personal Portfolio</h3>
-        <p>Clean, modern developer portfolio with skills section, project showcase, and contact links. Ideal for freelancers, designers, and job seekers.</p>
+        <h3>Nestify — Real Estate Listings</h3>
+        <p>Complete property listing platform with advanced search (location, price, BHK), photo galleries, agent contact forms, and saved favorites. Perfect for real estate agencies.</p>
         <div class="tech-tags">
-          <span class="ttag">HTML</span><span class="ttag">CSS</span><span class="ttag">Responsive</span>
+          <span class="ttag">React.js</span><span class="ttag">Node.js</span><span class="ttag">Search Filters</span><span class="ttag">PostgreSQL</span><span class="ttag">Gallery</span>
         </div>
-        <a href="/project-portfolio.html" class="pcard-link" target="_blank">View Live Demo →</a>
+        <a class="pcard-link">View Live Demo →</a>
       </div>
     </div>
 
-    <!-- ₹5,999 -->
-    <div class="pcard">
+    <!-- 3. SAAS DASHBOARD — ₹18,000 Enterprise -->
+    <div class="pcard stagger reveal" data-tier="enterprise">
       <div class="pcard-thumb">
-        <img src="/preview-boutique.jpg" alt="Lumière Fashion Boutique Preview">
+        <img src="img/pulseboard-hero.png" alt="PulseBoard SaaS Dashboard">
+        <span class="price-tag">₹18,000</span>
+        <span class="badge-tag enterprise">Enterprise</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">Live Charts</span>
+            <span class="feat">KPI Cards</span>
+            <span class="feat">Data Export</span>
+            <span class="feat">User Roles</span>
+            <span class="feat">Real-time</span>
+          </div>
+        </div>
+      </div>
+      <div class="pcard-body">
+        <h3>PulseBoard — SaaS Analytics</h3>
+        <p>Business analytics dashboard with real-time charts, KPI tracking, revenue reports, team management, and CSV/PDF export. Built for SaaS businesses and agencies.</p>
+        <div class="tech-tags">
+          <span class="ttag">React.js</span><span class="ttag">Chart.js</span><span class="ttag">Node.js</span><span class="ttag">PostgreSQL</span><span class="ttag">WebSockets</span>
+        </div>
+        <a class="pcard-link">View Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 4. RESTAURANT ORDERING — ₹10,000 Professional -->
+    <div class="pcard stagger reveal" data-tier="professional">
+      <div class="pcard-thumb">
+        <img src="img/spiceroute-hero.png" alt="SpiceRoute Restaurant">
+        <span class="price-tag">₹10,000</span>
+        <span class="badge-tag premium">Professional</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">Online Menu</span>
+            <span class="feat">Add to Cart</span>
+            <span class="feat">Order Tracking</span>
+            <span class="feat">WhatsApp Order</span>
+          </div>
+        </div>
+      </div>
+      <div class="pcard-body">
+        <h3>SpiceRoute — Restaurant System</h3>
+        <p>Online food ordering platform with interactive menu, add to cart, order summary, and WhatsApp order confirmation. Perfect for restaurants wanting online orders without Zomato fees.</p>
+        <div class="tech-tags">
+          <span class="ttag">React.js</span><span class="ttag">Cart System</span><span class="ttag">Node.js</span><span class="ttag">WhatsApp API</span>
+        </div>
+        <a class="pcard-link" href="/project-cafe.html" target="_blank">View Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 5. FASHION BOUTIQUE — ₹5,999 Standard -->
+    <div class="pcard stagger reveal" data-tier="standard">
+      <div class="pcard-thumb">
+        <div class="thumb-placeholder" style="background:linear-gradient(135deg,#1a1208,#2a1e0a);">👗</div>
         <span class="price-tag">₹5,999</span>
         <span class="badge-tag">Standard</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">Product Filter</span>
+            <span class="feat">Add to Cart</span>
+            <span class="feat">Marquee</span>
+            <span class="feat">Animations</span>
+          </div>
+        </div>
       </div>
       <div class="pcard-body">
         <h3>Lumière Fashion Boutique</h3>
-        <p>Premium fashion e-commerce page with product filtering, add-to-cart, scrolling marquee, and elegant design. Ideal for boutiques and clothing brands.</p>
+        <p>Premium fashion e-commerce page with category filtering, add-to-cart, scrolling marquee, and elegant editorial design. Ideal for boutiques and clothing brands.</p>
         <div class="tech-tags">
-          <span class="ttag">HTML</span><span class="ttag">CSS</span><span class="ttag">JS</span><span class="ttag">E-Commerce</span>
+          <span class="ttag">HTML/CSS</span><span class="ttag">JavaScript</span><span class="ttag">Filter</span><span class="ttag">Cart</span>
         </div>
-        <a href="/project-boutique.html" class="pcard-link" target="_blank">View Live Demo →</a>
+        <a class="pcard-link" href="/project-boutique.html" target="_blank">View Live Demo →</a>
       </div>
     </div>
 
-    <div class="pcard">
+    <!-- 6. JOINRACE — ₹5,999 Standard (moved from Premium) -->
+    <div class="pcard stagger reveal" data-tier="standard">
       <div class="pcard-thumb">
-        <img src="/preview-gallery.jpg" alt="Photography Portfolio Preview">
+        <div class="thumb-placeholder" style="background:linear-gradient(135deg,#1a1500,#0d0900);">🏎️</div>
         <span class="price-tag">₹5,999</span>
         <span class="badge-tag">Standard</span>
-      </div>
-      <div class="pcard-body">
-        <h3>Lens by Riya — Photography</h3>
-        <p>Stunning photography portfolio with masonry gallery, category filters, services pricing, and booking form. Great for photographers and creatives.</p>
-        <div class="tech-tags">
-          <span class="ttag">HTML</span><span class="ttag">CSS</span><span class="ttag">Gallery</span><span class="ttag">Booking</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">GSAP Entry</span>
+            <span class="feat">Swiper Slider</span>
+            <span class="feat">Color Split</span>
+            <span class="feat">Cinematic</span>
+          </div>
         </div>
-        <a href="/project-gallery.html" class="pcard-link" target="_blank">View Live Demo →</a>
-      </div>
-    </div>
-
-    <!-- ₹8,000–10,000 -->
-    <div class="pcard">
-      <div class="pcard-thumb">
-        <img src="/preview-controller.jpg" alt="Dragon Controller Store Preview">
-        <span class="price-tag">₹10,000</span>
-        <span class="badge-tag">Premium</span>
-      </div>
-      <div class="pcard-body">
-        <h3>Dragon Controller Store</h3>
-        <p>Animated 3D-style product carousel featuring 6 custom dragon-themed PS5 controllers. Color-switching background, smooth transitions, premium feel.</p>
-        <div class="tech-tags">
-          <span class="ttag">CSS Animations</span><span class="ttag">Carousel</span><span class="ttag">JS</span>
-        </div>
-        <a href="/project-controller.html" class="pcard-link" target="_blank">View Live Demo →</a>
-      </div>
-    </div>
-
-    <div class="pcard">
-      <div class="pcard-thumb">
-        <img src="/preview-joinrace.jpg" alt="JoinRace Car Showcase Preview">
-        <span class="price-tag">₹10,000</span>
-        <span class="badge-tag">Premium</span>
       </div>
       <div class="pcard-body">
         <h3>JoinRace Car Showcase</h3>
-        <p>Cinematic vertical car showcase with GSAP animations, Swiper.js slider, dynamic color splits, and smooth entry effects. Built for luxury brands.</p>
+        <p>Cinematic vertical car showcase with GSAP animations, Swiper.js slider, dynamic color splits, and smooth entry effects. Built for automotive and luxury brands.</p>
         <div class="tech-tags">
-          <span class="ttag">GSAP</span><span class="ttag">Swiper.js</span><span class="ttag">Animations</span>
+          <span class="ttag">GSAP</span><span class="ttag">Swiper.js</span><span class="ttag">CSS Animations</span>
         </div>
-        <a href="/project-joinrace.html" class="pcard-link" target="_blank">View Live Demo →</a>
+        <a class="pcard-link" href="/project-joinrace.html" target="_blank">View Live Demo →</a>
       </div>
     </div>
 
-    <div class="pcard">
+    <!-- 7. PHOTOGRAPHY — ₹5,999 Standard -->
+    <div class="pcard stagger reveal" data-tier="standard">
       <div class="pcard-thumb">
-        <img src="/preview-loginform.jpg" alt="Premium Login Form Preview">
-        <span class="price-tag">₹8,000–10,000</span>
-        <span class="badge-tag">Premium</span>
+        <div class="thumb-placeholder" style="background:linear-gradient(135deg,#0c0c0c,#1a1a1a);">📷</div>
+        <span class="price-tag">₹5,999</span>
+        <span class="badge-tag">Standard</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">Masonry Gallery</span>
+            <span class="feat">Category Filter</span>
+            <span class="feat">Booking Form</span>
+            <span class="feat">Service Pricing</span>
+          </div>
+        </div>
       </div>
       <div class="pcard-body">
-        <h3>Premium Login Form</h3>
-        <p>Glassmorphism login page with floating particle animation, social sign-in options, and dark premium design. Ideal as a client portal or app entry screen.</p>
+        <h3>Lens by Riya — Photography</h3>
+        <p>Stunning photography portfolio with masonry gallery, category filters, services & pricing, and a full booking form. Great for photographers and creatives.</p>
         <div class="tech-tags">
-          <span class="ttag">Glassmorphism</span><span class="ttag">Dark Theme</span><span class="ttag">Animations</span>
+          <span class="ttag">HTML/CSS</span><span class="ttag">Masonry Grid</span><span class="ttag">Filter</span><span class="ttag">Booking</span>
         </div>
-        <a href="/project-loginform.html" class="pcard-link" target="_blank">View Live Demo →</a>
+        <a class="pcard-link" href="/project-gallery.html" target="_blank">View Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 8. CAFÉ — ₹2,999 Starter -->
+    <div class="pcard stagger reveal" data-tier="starter">
+      <div class="pcard-thumb">
+        <div class="thumb-placeholder" style="background:linear-gradient(135deg,#1a0f00,#2a1800);">☕</div>
+        <span class="price-tag">₹2,999</span>
+        <span class="badge-tag">Starter</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">Menu Tabs</span>
+            <span class="feat">Contact Form</span>
+            <span class="feat">Gallery Strip</span>
+            <span class="feat">Google Maps</span>
+          </div>
+        </div>
+      </div>
+      <div class="pcard-body">
+        <h3>Brew &amp; Bloom Café</h3>
+        <p>Beautiful café landing page with interactive menu tabs, gallery, contact form, and smooth scroll navigation. Perfect for restaurants, cafés, and food businesses.</p>
+        <div class="tech-tags">
+          <span class="ttag">HTML/CSS</span><span class="ttag">JavaScript</span><span class="ttag">Responsive</span>
+        </div>
+        <a class="pcard-link" href="/project-cafe.html" target="_blank">View Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- 9. PERSONAL PORTFOLIO — ₹2,999 Starter -->
+    <div class="pcard stagger reveal" data-tier="starter">
+      <div class="pcard-thumb">
+        <div class="thumb-placeholder" style="background:linear-gradient(135deg,#0b0e14,#131720);">💼</div>
+        <span class="price-tag">₹2,999</span>
+        <span class="badge-tag">Starter</span>
+        <div class="pcard-features">
+          <div class="feat-list">
+            <span class="feat">Skill Bars</span>
+            <span class="feat">Project Grid</span>
+            <span class="feat">Contact Links</span>
+            <span class="feat">Animated</span>
+          </div>
+        </div>
+      </div>
+      <div class="pcard-body">
+        <h3>Personal Developer Portfolio</h3>
+        <p>Clean, modern developer portfolio with skill bars, project showcase, and contact section. Ideal for freelancers, designers, and job seekers looking professional online.</p>
+        <div class="tech-tags">
+          <span class="ttag">HTML/CSS</span><span class="ttag">JavaScript</span><span class="ttag">Responsive</span>
+        </div>
+        <a class="pcard-link" href="/project-portfolio.html" target="_blank">View Live Demo →</a>
       </div>
     </div>
 
@@ -319,104 +570,308 @@ footer{background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.06);pa
 <!-- SERVICES -->
 <section class="services" id="services">
   <div class="services-inner">
-    <div class="section-label" style="text-align:center;">What We Offer</div>
-    <h2 class="section-title" style="text-align:center;margin-bottom:6px;">Our Packages</h2>
-    <p class="section-sub" style="text-align:center;margin-bottom:48px;">Transparent pricing, no hidden fees.</p>
+    <div class="reveal"><div class="section-label" style="text-align:center">What We Offer</div></div>
+    <h2 class="section-title reveal" style="text-align:center;transition-delay:0.05s">Our Packages</h2>
+    <p class="section-sub reveal" style="text-align:center;transition-delay:0.1s">Transparent pricing. No hidden fees. Every site custom-built for your brand.</p>
     <div class="services-grid">
-      <div class="scard">
+      <div class="scard reveal stagger">
         <div class="scard-icon">🚀</div>
-        <h3>Starter Website</h3>
-        <p>Single-page website with responsive design, contact form, and Google Maps integration. Perfect for local businesses and freelancers.</p>
+        <h3>Starter</h3>
+        <p>Single-page website with everything a small business needs to go online fast.</p>
         <div class="scard-price">From ₹2,999</div>
+        <ul class="scard-features-list">
+          <li>1-page responsive design</li>
+          <li>Contact form</li>
+          <li>WhatsApp button</li>
+          <li>Google Maps embed</li>
+          <li>Mobile-first</li>
+          <li>2 revisions</li>
+        </ul>
       </div>
-      <div class="scard">
+      <div class="scard reveal stagger">
         <div class="scard-icon">💼</div>
-        <h3>Standard Website</h3>
-        <p>Multi-section website with animations, gallery/portfolio, booking or e-commerce features, and WhatsApp integration.</p>
+        <h3>Standard</h3>
+        <p>Multi-section website with animations, gallery, booking, and advanced features.</p>
         <div class="scard-price">From ₹5,999</div>
+        <ul class="scard-features-list">
+          <li>5-page website</li>
+          <li>Photo/product gallery</li>
+          <li>Booking or enquiry form</li>
+          <li>GSAP animations</li>
+          <li>WhatsApp integration</li>
+          <li>5 revisions</li>
+        </ul>
       </div>
-      <div class="scard">
+      <div class="scard reveal stagger">
         <div class="scard-icon">⚡</div>
-        <h3>Premium Website</h3>
-        <p>Fully custom, advanced animations (GSAP, Swiper), interactive 3D product showcases, and cinematic design — built to impress.</p>
+        <h3>Professional</h3>
+        <p>React-powered website with cart, ordering system, and backend integration.</p>
         <div class="scard-price">From ₹10,000</div>
+        <ul class="scard-features-list">
+          <li>React.js frontend</li>
+          <li>Node.js backend</li>
+          <li>Cart / ordering system</li>
+          <li>Database integration</li>
+          <li>Admin panel</li>
+          <li>Unlimited revisions</li>
+        </ul>
       </div>
-      <div class="scard">
-        <div class="scard-icon">🔧</div>
-        <h3>Add-Ons</h3>
-        <p>SEO optimization, custom domain setup, WhatsApp chatbot, admin panel, payment gateway, and more on request.</p>
-        <div class="scard-price">Custom Pricing</div>
+      <div class="scard reveal stagger">
+        <div class="scard-icon">🏆</div>
+        <h3>Enterprise</h3>
+        <p>Full-stack platforms with login, payments, search, dashboards, and everything.</p>
+        <div class="scard-price">From ₹14,000</div>
+        <ul class="scard-features-list">
+          <li>Full-stack (React + Node)</li>
+          <li>User login & accounts</li>
+          <li>Payment gateway</li>
+          <li>Search & advanced filters</li>
+          <li>Analytics dashboard</li>
+          <li>Lifetime support</li>
+        </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <div class="reveal"><div class="section-label">Tech Stack</div></div>
+  <h2 class="section-title reveal" style="transition-delay:0.05s">Skills & Technologies</h2>
+  <p class="section-sub reveal" style="transition-delay:0.1s">Every technology we use — from design to deployment.</p>
+  <div class="skills-grid">
+    <div class="skill-card reveal stagger">
+      <span class="skill-icon">⚛️</span>
+      <h4>React.js</h4>
+      <div class="skill-bar"><div class="skill-fill" data-width="92"></div></div>
+    </div>
+    <div class="skill-card reveal stagger">
+      <span class="skill-icon">🟢</span>
+      <h4>Node.js / Express</h4>
+      <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
+    </div>
+    <div class="skill-card reveal stagger">
+      <span class="skill-icon">🎨</span>
+      <h4>CSS / Tailwind</h4>
+      <div class="skill-bar"><div class="skill-fill" data-width="95"></div></div>
+    </div>
+    <div class="skill-card reveal stagger">
+      <span class="skill-icon">🗄️</span>
+      <h4>PostgreSQL / MySQL</h4>
+      <div class="skill-bar"><div class="skill-fill" data-width="82"></div></div>
+    </div>
+    <div class="skill-card reveal stagger">
+      <span class="skill-icon">⚡</span>
+      <h4>GSAP Animations</h4>
+      <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+    </div>
+    <div class="skill-card reveal stagger">
+      <span class="skill-icon">📱</span>
+      <h4>Responsive Design</h4>
+      <div class="skill-bar"><div class="skill-fill" data-width="98"></div></div>
+    </div>
+    <div class="skill-card reveal stagger">
+      <span class="skill-icon">🔌</span>
+      <h4>REST API Design</h4>
+      <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+    </div>
+    <div class="skill-card reveal stagger">
+      <span class="skill-icon">🔐</span>
+      <h4>Auth & Login Systems</h4>
+      <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
     </div>
   </div>
 </section>
 
 <!-- WHY VEXORA -->
 <section class="why" id="why">
-  <div class="section-label">Why Choose Us</div>
-  <h2 class="section-title" style="margin-bottom:40px;">Why Clients Pick Vexora</h2>
+  <div class="reveal"><div class="section-label">Why Choose Us</div></div>
+  <h2 class="section-title reveal" style="margin-bottom:44px;transition-delay:0.05s">Why Clients Pick Vexora</h2>
   <div class="why-grid">
-    <div class="why-card"><div class="why-num">01</div><div><h4>Mobile-First Always</h4><p>Every website we build works perfectly on phones, tablets, and desktops — we test on all screen sizes.</p></div></div>
-    <div class="why-card"><div class="why-num">02</div><div><h4>Fast Delivery</h4><p>Most projects delivered in 24–72 hours. We respect your time and launch deadlines.</p></div></div>
-    <div class="why-card"><div class="why-num">03</div><div><h4>Premium Design</h4><p>We don't use templates. Every site is custom-crafted to match your brand and audience.</p></div></div>
-    <div class="why-card"><div class="why-num">04</div><div><h4>Affordable Pricing</h4><p>Professional quality at honest prices. Starting ₹2,999 — no bloat, no hidden charges.</p></div></div>
-    <div class="why-card"><div class="why-num">05</div><div><h4>Free Revisions</h4><p>Not happy with something? We'll revise until you love it. Your satisfaction is guaranteed.</p></div></div>
-    <div class="why-card"><div class="why-num">06</div><div><h4>WhatsApp Support</h4><p>Direct communication. Reach us anytime on WhatsApp — no ticket systems, no delays.</p></div></div>
+    <div class="why-card reveal stagger"><div class="why-num">01</div><div><h4>Mobile-First Always</h4><p>Every website we build works perfectly on phones, tablets, and desktops. We test on all screen sizes before delivery.</p></div></div>
+    <div class="why-card reveal stagger"><div class="why-num">02</div><div><h4>Fast Delivery</h4><p>Most projects delivered in 24–72 hours. Larger full-stack projects in 5–7 days. We always hit deadlines.</p></div></div>
+    <div class="why-card reveal stagger"><div class="why-num">03</div><div><h4>Custom — Never Templates</h4><p>Every site is designed and coded from scratch. No WordPress themes, no page builders, just clean custom code.</p></div></div>
+    <div class="why-card reveal stagger"><div class="why-num">04</div><div><h4>Full Stack Capability</h4><p>From a simple landing page to a complex e-commerce platform with database and payments — we build it all.</p></div></div>
+    <div class="why-card reveal stagger"><div class="why-num">05</div><div><h4>Free Revisions</h4><p>Not happy with something? We revise until you love it. Your satisfaction is our top priority, always.</p></div></div>
+    <div class="why-card reveal stagger"><div class="why-num">06</div><div><h4>WhatsApp Support</h4><p>Direct communication. Reach us on WhatsApp any time — no ticketing, no delays, just real support.</p></div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="reveal"><div class="section-label">Client Reviews</div></div>
+    <h2 class="section-title reveal" style="margin-bottom:44px;transition-delay:0.05s">What Our Clients Say</h2>
+    <div class="testi-grid">
+      <div class="tcard reveal stagger">
+        <div class="tcard-stars">★★★★★</div>
+        <p>"Vexora built our restaurant website in just 2 days. The online menu and order form works perfectly. We now get orders directly without paying Zomato commission."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">R</div>
+          <div><strong>Rajesh Kumar</strong><span>Spice Garden Restaurant · Patiala</span></div>
+        </div>
+      </div>
+      <div class="tcard reveal stagger">
+        <div class="tcard-stars">★★★★★</div>
+        <p>"I needed a portfolio to get freelance clients. Vexora delivered an amazing site in 48 hours. I got my first client within a week of sharing the link."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">P</div>
+          <div><strong>Priya Sharma</strong><span>Freelance Designer · Chandigarh</span></div>
+        </div>
+      </div>
+      <div class="tcard reveal stagger">
+        <div class="tcard-stars">★★★★★</div>
+        <p>"Our boutique needed an online presence. They built us a beautiful website with product filters and cart. Sales increased after going online. Highly recommend!"</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">S</div>
+          <div><strong>Simran Kaur</strong><span>Fashion Boutique Owner · Amritsar</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta" id="contact">
-  <div class="cta-box">
+  <div class="cta-box reveal">
     <h2>Ready to Build Your Website?</h2>
-    <p>Get a free consultation and custom quote — no commitment needed. Most projects start within 24 hours of order.</p>
+    <p>Free consultation, custom quote within 1 hour. Most projects start within 24 hours of your order. No commitment needed to get a quote.</p>
     <div class="cta-btns">
       <a href="https://wa.me/918264157603?text=Hi%20Vexora!%20I%20want%20a%20website%20quote." target="_blank" class="btn-amber">💬 WhatsApp Now</a>
-      <a href="mailto:vexora.0000@gmail.com" class="btn-ghost">✉️ Email Us</a>
+      <a href="mailto:vexora.0000@gmail.com" class="btn-ghost">✉️ Send Email</a>
     </div>
-    <p style="color:rgba(255,255,255,0.25);font-size:13px;margin-top:24px;">📍 Patiala, Punjab &nbsp;·&nbsp; vexora.0000@gmail.com &nbsp;·&nbsp; +91 82641 57603</p>
+    <p class="cta-note">📍 Patiala, Punjab &nbsp;·&nbsp; vexora.0000@gmail.com &nbsp;·&nbsp; +91 82641 57603</p>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 40 40" fill="none">
-          <path d="M8 10 L20 28 L32 10" stroke="#0A1628" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14 10 L20 20 L26 10" stroke="#0A1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
-        </svg>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="logo-mark" style="width:32px;height:32px;">
+            <svg viewBox="0 0 40 40" fill="none"><path d="M8 10 L20 28 L32 10" stroke="#0A1628" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 10 L20 20 L26 10" stroke="#0A1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/></svg>
+          </div>
+          <span class="logo-text">VEXORA</span>
+        </div>
+        <p>Web Design Agency based in Patiala, Punjab. Building websites that grow businesses — from landing pages to full-stack platforms.</p>
       </div>
-      <span class="logo-text">VEXORA</span>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="#services">Starter Websites</a>
+        <a href="#services">Standard Websites</a>
+        <a href="#services">Professional (React)</a>
+        <a href="#services">Enterprise Platforms</a>
+        <a href="#services">Add-Ons & Support</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="https://wa.me/918264157603" target="_blank">💬 WhatsApp</a>
+        <a href="mailto:vexora.0000@gmail.com">✉️ Email</a>
+        <a href="#">💼 Fiverr</a>
+        <a href="#">🔗 LinkedIn</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="#projects">Work</a>
-      <a href="#services">Services</a>
-      <a href="https://wa.me/918264157603" target="_blank">WhatsApp</a>
-      <a href="mailto:vexora.0000@gmail.com">Email</a>
+    <div class="footer-copy">
+      <p>© 2025 Vexora Web Design · Patiala, Punjab · Built by <a href="/">Vexora</a></p>
+      <p style="color:rgba(255,255,255,0.15);">HTML · CSS · JavaScript · React · Node.js · PostgreSQL</p>
     </div>
-    <div class="footer-copy">© 2025 Vexora Web Design · Patiala, Punjab · Built with ❤️ by <a href="/">Vexora</a></div>
   </div>
 </footer>
 
 <script>
+/* ====== NAV ====== */
 function toggleNav(){
-  const h=document.getElementById('hamburger');
-  const m=document.getElementById('mobileNav');
-  h.classList.toggle('open');
-  m.classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileNav').classList.toggle('open');
 }
 function closeNav(){
   document.getElementById('hamburger').classList.remove('open');
   document.getElementById('mobileNav').classList.remove('open');
 }
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40);
+});
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const t=document.querySelector(a.getAttribute('href'));
     if(t){e.preventDefault();closeNav();setTimeout(()=>t.scrollIntoView({behavior:'smooth'}),50);}
   });
 });
+
+/* ====== SCROLL REVEAL ====== */
+const revealObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+    }
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revealObserver.observe(el));
+
+/* ====== COUNTER ANIMATION ====== */
+const counters=document.querySelectorAll('.counter');
+const counterObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting && !e.target.dataset.done){
+      e.target.dataset.done='1';
+      const target=parseInt(e.target.dataset.target);
+      const suffix=e.target.dataset.target.includes('%')?'%':'+';
+      let start=0;
+      const step=()=>{
+        start+=Math.ceil(target/40);
+        if(start>=target){e.target.textContent=target+suffix;return;}
+        e.target.textContent=start+(target<10?'':suffix);
+        requestAnimationFrame(step);
+      };
+      step();
+    }
+  });
+},{threshold:0.5});
+counters.forEach(c=>counterObserver.observe(c));
+
+/* ====== SKILL BAR ANIMATION ====== */
+const skillObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.skill-fill').forEach(fill=>{
+        fill.style.width=fill.dataset.width+'%';
+      });
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.skills-grid').forEach(el=>skillObserver.observe(el));
+
+/* ====== PROJECT FILTER ====== */
+function filterCards(tier, btn){
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pcard').forEach(card=>{
+    if(tier==='all' || card.dataset.tier===tier){
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+/* ====== FLOATING PARTICLES ====== */
+const particleContainer=document.getElementById('particles');
+for(let i=0;i<18;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  const size=Math.random()*4+2;
+  p.style.cssText=`
+    width:${size}px;height:${size}px;
+    background:rgba(245,166,35,${Math.random()*0.3+0.1});
+    left:${Math.random()*100}%;
+    bottom:${Math.random()*30-10}%;
+    animation-duration:${Math.random()*12+10}s;
+    animation-delay:${Math.random()*8}s;
+  `;
+  particleContainer.appendChild(p);
+}
 </script>
 </body>
 </html>
