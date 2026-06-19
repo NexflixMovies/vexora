@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aryan Sharma — Developer Portfolio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#0b0e14;--surface:#131720;--border:rgba(255,255,255,0.07);--accent:#6ee7b7;--accent2:#818cf8;--text:#e2e8f0;--muted:rgba(226,232,240,0.45);}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.6;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,14,20,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Space Mono',monospace;font-size:16px;color:var(--accent);}
+.nav-logo span{color:var(--muted);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;transition:0.2s;}
+.nav-links a:hover{color:var(--accent);}
+.nav-hire{background:var(--accent);color:#0b0e14;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:0.3s;}
+.nav-hire:hover{opacity:0.85;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;}
+.mobile-menu{display:none;position:fixed;top:61px;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);padding:20px;z-index:99;flex-direction:column;gap:16px;}
+.mobile-menu a{color:var(--text);text-decoration:none;font-size:15px;padding:8px 0;border-bottom:1px solid var(--border);}
+.mobile-menu.open{display:flex;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 40px 60px;max-width:1100px;margin:0 auto;}
+.hero-inner{display:grid;grid-template-columns:1fr 380px;gap:80px;align-items:center;width:100%;}
+.hero-tag{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+.hero h1{font-size:clamp(38px,5vw,64px);font-weight:700;line-height:1.1;margin-bottom:20px;}
+.hero h1 .highlight{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{color:var(--muted);font-size:16px;max-width:480px;line-height:1.7;margin-bottom:32px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-green{background:var(--accent);color:#0b0e14;padding:13px 28px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;transition:0.3s;}
+.btn-green:hover{opacity:0.85;}
+.btn-ghost{border:1px solid var(--border);color:var(--text);padding:12px 26px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;transition:0.3s;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.hero-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;overflow:hidden;}
+.hero-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(110,231,183,0.12) 0%,transparent 70%);}
+.avatar{width:80px;height:80px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px;}
+.hero-card h3{font-size:18px;font-weight:600;margin-bottom:4px;}
+.hero-card p{color:var(--muted);font-size:13px;margin-bottom:20px;}
+.tech-stack{display:flex;flex-wrap:wrap;gap:8px;}
+.badge{background:rgba(110,231,183,0.1);border:1px solid rgba(110,231,183,0.2);color:var(--accent);padding:4px 12px;border-radius:50px;font-size:12px;font-family:'Space Mono',monospace;}
+
+/* SKILLS */
+.skills-section{padding:80px 40px;max-width:1100px;margin:0 auto;}
+.section-label{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+.section-title{font-size:clamp(26px,4vw,38px);font-weight:700;margin-bottom:48px;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
+.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;transition:0.3s;}
+.skill-card:hover{border-color:rgba(110,231,183,0.3);transform:translateY(-4px);}
+.skill-icon{font-size:32px;margin-bottom:14px;}
+.skill-card h4{font-size:15px;font-weight:600;margin-bottom:8px;}
+.skill-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.skill-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width 1.5s ease;}
+
+/* PROJECTS */
+.projects-section{padding:80px 40px;background:var(--surface);}
+.projects-inner{max-width:1100px;margin:0 auto;}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;}
+.project-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.3s;}
+.project-card:hover{border-color:rgba(129,140,248,0.3);transform:translateY(-4px);}
+.project-thumb{height:180px;display:flex;align-items:center;justify-content:center;font-size:60px;}
+.project-body{padding:20px;}
+.project-body h3{font-size:16px;font-weight:600;margin-bottom:6px;}
+.project-body p{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:14px;}
+.project-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.ptag{background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);color:var(--accent2);padding:3px 10px;border-radius:50px;font-size:11px;font-family:'Space Mono',monospace;}
+
+/* CONTACT */
+.contact{padding:80px 40px;max-width:700px;margin:0 auto;text-align:center;}
+.contact h2{font-size:clamp(28px,4vw,42px);font-weight:700;margin-bottom:16px;}
+.contact p{color:var(--muted);font-size:16px;margin-bottom:40px;line-height:1.7;}
+.contact-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.contact-link{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:14px 28px;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;transition:0.3s;}
+.contact-link:hover{border-color:var(--accent);color:var(--accent);}
+
+footer{text-align:center;padding:32px 20px;border-top:1px solid var(--border);color:var(--muted);font-size:13px;}
+footer a{color:var(--accent);text-decoration:none;}
+
+@media(max-width:768px){
+  nav{padding:14px 20px;}
+  .nav-links,.nav-hire{display:none;}
+  .hamburger{display:flex;}
+  .hero{padding:90px 20px 60px;}
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-card{display:none;}
+  .skills-section,.projects-section,.contact{padding:60px 20px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span>// </span>aryan.dev</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-hire">Hire Me</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#skills" onclick="toggleMenu()">Skills</a>
+  <a href="#projects" onclick="toggleMenu()">Projects</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="/" style="color:var(--muted);font-size:13px;">← Back to Portfolio</a>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Full Stack Developer</div>
+      <h1>Building <span class="highlight">digital</span> things that matter.</h1>
+      <p class="hero-sub">I design and build clean, fast, accessible web applications. Specializing in React, Node.js, and modern UI/UX that users love.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-green">View My Work</a>
+        <a href="#contact" class="btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="avatar">👨‍💻</div>
+      <h3>Aryan Sharma</h3>
+      <p>Full Stack Developer · Patiala, India</p>
+      <div class="tech-stack">
+        <span class="badge">React</span>
+        <span class="badge">Node.js</span>
+        <span class="badge">TypeScript</span>
+        <span class="badge">MongoDB</span>
+        <span class="badge">Tailwind</span>
+        <span class="badge">Firebase</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="skills-section" id="skills">
+  <div class="section-label">What I Do</div>
+  <h2 class="section-title">Skills & Expertise</h2>
+  <div class="skills-grid">
+    <div class="skill-card"><div class="skill-icon">⚛️</div><h4>React / Next.js</h4><div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div></div>
+    <div class="skill-card"><div class="skill-icon">🟢</div><h4>Node.js</h4><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+    <div class="skill-card"><div class="skill-icon">🎨</div><h4>UI/UX Design</h4><div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div></div>
+    <div class="skill-card"><div class="skill-icon">🗄️</div><h4>Databases</h4><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+    <div class="skill-card"><div class="skill-icon">📱</div><h4>Mobile Dev</h4><div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div></div>
+    <div class="skill-card"><div class="skill-icon">☁️</div><h4>Cloud / DevOps</h4><div class="skill-bar"><div class="skill-fill" style="width:68%"></div></div></div>
+  </div>
+</section>
+
+<section class="projects-section" id="projects">
+  <div class="projects-inner">
+    <div class="section-label">My Work</div>
+    <h2 class="section-title">Recent Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card"><div class="project-thumb" style="background:linear-gradient(135deg,#1e293b,#0f172a);">🛒</div><div class="project-body"><h3>ShopEase — E-Commerce</h3><p>Full-stack e-commerce platform with cart, payments, inventory management, and admin dashboard.</p><div class="project-tags"><span class="ptag">React</span><span class="ptag">Node</span><span class="ptag">MongoDB</span></div></div></div>
+      <div class="project-card"><div class="project-thumb" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">📊</div><div class="project-body"><h3>Analytics Dashboard</h3><p>Real-time data visualization dashboard with charts, filters, and export features for SaaS teams.</p><div class="project-tags"><span class="ptag">Next.js</span><span class="ptag">D3.js</span><span class="ptag">Supabase</span></div></div></div>
+      <div class="project-card"><div class="project-thumb" style="background:linear-gradient(135deg,#0d1117,#161b22);">💬</div><div class="project-body"><h3>ChatFlow — Messaging App</h3><p>Real-time messaging with rooms, file sharing, notifications and end-to-end encryption.</p><div class="project-tags"><span class="ptag">Socket.io</span><span class="ptag">React</span><span class="ptag">Redis</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2>Let's build something great together</h2>
+  <p>Currently available for freelance projects and full-time opportunities. Reach out via any platform.</p>
+  <div class="contact-links">
+    <a href="mailto:aryan@example.com" class="contact-link">✉️ aryan@example.com</a>
+    <a href="#" class="contact-link">💼 LinkedIn</a>
+    <a href="#" class="contact-link">🐙 GitHub</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Aryan Sharma · Website by <a href="/">Vexora</a> · <a href="/">← Back to Portfolio</a></p>
+</footer>
+
+<script>
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.skill-fill').forEach(f=>{f.style.width=f.style.width;});}));
+document.querySelectorAll('.skills-grid').forEach(g=>observer.observe(g));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+</script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumière — Fashion Boutique</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--black:#0a0a0a;--white:#fafaf8;--gold:#c9a96e;--light:#f4f1ec;--muted:#888;}
+html{scroll-behavior:smooth;}
+body{background:var(--white);color:var(--black);font-family:'Jost',sans-serif;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;background:rgba(250,250,248,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,0.06);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;transition:0.2s;}
+.nav-links a:hover{color:var(--black);}
+.nav-actions{display:flex;align-items:center;gap:16px;}
+.nav-cart{position:relative;cursor:pointer;font-size:18px;}
+.cart-count{position:absolute;top:-6px;right:-8px;background:var(--gold);color:#fff;width:16px;height:16px;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.hamburger span{width:22px;height:1px;background:var(--black);transition:0.3s;}
+.mobile-menu{display:none;position:fixed;top:65px;left:0;right:0;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.06);padding:24px 32px;z-index:99;flex-direction:column;gap:20px;}
+.mobile-menu a{color:var(--black);text-decoration:none;font-size:15px;letter-spacing:1px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.06);}
+.mobile-menu.open{display:flex;}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:80px;}
+.hero-left{background:var(--black);display:flex;align-items:center;justify-content:center;padding:60px;}
+.hero-right{background:var(--light);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.hero-right::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a96e' fill-opacity='0.08'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0L80 12v2L54 40h-2zm4 0L80 16v2L58 40h-2zm4 0L80 20v2L62 40h-2zm4 0L80 24v2L66 40h-2zm4 0L80 28v2L70 40h-2zm4 0L80 32v2L74 40h-2zm4 0L80 36v2L78 40h-2zm4 0L80 40v-2h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+.hero-mockup{width:280px;height:380px;background:linear-gradient(160deg,#d4b896,#c9a96e 40%,#a07840);border-radius:20px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:40px 40px 80px rgba(0,0,0,0.15);}
+.hero-mockup span{font-size:80px;}
+.hero-content{max-width:460px;}
+.hero-tag{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,5vw,70px);font-weight:300;color:#fff;line-height:1.05;margin-bottom:24px;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero-sub{color:rgba(255,255,255,0.55);font-size:15px;line-height:1.7;margin-bottom:36px;font-weight:300;}
+.btn-gold{background:var(--gold);color:#fff;padding:14px 36px;border-radius:0;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;transition:0.3s;}
+.btn-gold:hover{background:#b8914d;}
+.btn-line{border:1px solid rgba(255,255,255,0.25);color:#fff;padding:13px 34px;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;transition:0.3s;margin-left:12px;}
+.btn-line:hover{border-color:#fff;}
+
+/* MARQUEE */
+.marquee{background:var(--gold);padding:14px 0;overflow:hidden;white-space:nowrap;}
+.marquee-inner{display:inline-block;animation:marquee 20s linear infinite;}
+.marquee span{font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#fff;margin:0 30px;}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* COLLECTIONS */
+.collections{padding:80px 48px;max-width:1200px;margin:0 auto;}
+.sec-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,48px);font-weight:400;margin-bottom:48px;}
+.filter-bar{display:flex;gap:0;margin-bottom:36px;border-bottom:1px solid rgba(0,0,0,0.08);}
+.filt{padding:10px 24px;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:0.2s;}
+.filt.active{color:var(--black);border-bottom-color:var(--black);}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:32px;}
+.product-card{cursor:pointer;position:relative;}
+.product-card.hidden{display:none;}
+.product-img{aspect-ratio:3/4;background:var(--light);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:70px;position:relative;overflow:hidden;transition:0.5s;}
+.product-card:hover .product-img{transform:scale(1.02);}
+.product-badge{position:absolute;top:14px;left:14px;background:var(--black);color:#fff;padding:5px 12px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.product-badge.new{background:var(--gold);}
+.add-btn{position:absolute;bottom:0;left:0;right:0;background:var(--black);color:#fff;padding:14px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-align:center;transform:translateY(100%);transition:0.3s;border:none;cursor:pointer;}
+.product-card:hover .add-btn{transform:translateY(0);}
+.product-info{padding:14px 0 0;}
+.product-info h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;margin-bottom:4px;}
+.product-info p{font-size:13px;color:var(--muted);margin-bottom:8px;}
+.product-price{font-size:15px;font-weight:600;color:var(--black);}
+
+/* ABOUT */
+.about{padding:80px 48px;background:var(--black);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.about h2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,52px);font-weight:300;color:#fff;margin-bottom:24px;line-height:1.2;}
+.about h2 em{font-style:italic;color:var(--gold);}
+.about p{color:rgba(255,255,255,0.55);font-size:15px;line-height:1.8;margin-bottom:24px;}
+.about-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.about-stat{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;}
+.about-stat strong{display:block;font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--gold);line-height:1;}
+.about-stat span{font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;}
+
+footer{text-align:center;padding:32px;background:var(--light);color:var(--muted);font-size:13px;}
+footer a{color:var(--gold);text-decoration:none;}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;}
+  .hero-right{display:none;}
+  .hero-left{padding:40px 24px;}
+  .about{grid-template-columns:1fr;padding:60px 24px;}
+}
+@media(max-width:768px){
+  nav{padding:16px 20px;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .collections{padding:60px 20px;}
+  .filter-bar{overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Lumi<span>è</span>re</div>
+  <ul class="nav-links">
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="nav-cart">🛍️<span class="cart-count" id="cartCount">0</span></div>
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#collections" onclick="toggleMenu()">Collections</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="/" style="color:var(--muted);font-size:13px;">← Back to Portfolio</a>
+</div>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-content">
+      <div class="hero-tag">New Collection 2025</div>
+      <h1>Dressed in <em>Elegance.</em> Made to Last.</h1>
+      <p class="hero-sub">Lumière curates premium fashion — thoughtfully designed, ethically made, and built to become wardrobe staples you'll reach for again and again.</p>
+      <a href="#collections" class="btn-gold">Shop Now</a>
+      <a href="#about" class="btn-line">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-mockup"><span>👗</span></div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-inner">
+    <span>New Arrivals</span><span>·</span><span>Free Shipping Over ₹2000</span><span>·</span><span>Ethically Made</span><span>·</span><span>Premium Quality</span><span>·</span><span>New Arrivals</span><span>·</span><span>Free Shipping Over ₹2000</span><span>·</span><span>Ethically Made</span><span>·</span><span>Premium Quality</span><span>·</span><span>New Arrivals</span><span>·</span><span>Free Shipping Over ₹2000</span><span>·</span><span>Ethically Made</span><span>·</span><span>Premium Quality</span>
+  </div>
+</div>
+
+<section class="collections" id="collections">
+  <div class="sec-label">Explore</div>
+  <h2 class="sec-title">Our Collections</h2>
+  <div class="filter-bar">
+    <div class="filt active" onclick="filterProducts('all',this)">All</div>
+    <div class="filt" onclick="filterProducts('dresses',this)">Dresses</div>
+    <div class="filt" onclick="filterProducts('tops',this)">Tops</div>
+    <div class="filt" onclick="filterProducts('accessories',this)">Accessories</div>
+  </div>
+  <div class="products-grid">
+    <div class="product-card" data-cat="dresses">
+      <div class="product-img" style="background:linear-gradient(135deg,#f4e8d8,#e8d0b8);">👗<span class="product-badge new">New</span><button class="add-btn" onclick="addCart()">Add to Cart</button></div>
+      <div class="product-info"><h3>Silk Evening Gown</h3><p>Midnight Blush · S M L XL</p><div class="product-price">₹4,299</div></div>
+    </div>
+    <div class="product-card" data-cat="dresses">
+      <div class="product-img" style="background:linear-gradient(135deg,#dce8f4,#b8d0e8);">🥻<span class="product-badge">Sale</span><button class="add-btn" onclick="addCart()">Add to Cart</button></div>
+      <div class="product-info"><h3>Linen Wrap Dress</h3><p>Ocean Blue · XS S M L</p><div class="product-price">₹2,799 <span style="color:#888;text-decoration:line-through;font-size:12px;">₹3,499</span></div></div>
+    </div>
+    <div class="product-card" data-cat="tops">
+      <div class="product-img" style="background:linear-gradient(135deg,#f4f0e8,#e8e0d0);">👚<button class="add-btn" onclick="addCart()">Add to Cart</button></div>
+      <div class="product-info"><h3>Breezy Linen Top</h3><p>Ivory White · XS S M L XL</p><div class="product-price">₹1,499</div></div>
+    </div>
+    <div class="product-card" data-cat="tops">
+      <div class="product-img" style="background:linear-gradient(135deg,#e8f4e8,#d0e8d0);">🎽<span class="product-badge new">New</span><button class="add-btn" onclick="addCart()">Add to Cart</button></div>
+      <div class="product-info"><h3>Ribbed Knit Crop</h3><p>Forest Green · XS S M</p><div class="product-price">₹1,799</div></div>
+    </div>
+    <div class="product-card" data-cat="accessories">
+      <div class="product-img" style="background:linear-gradient(135deg,#f4ecd8,#e8d4b4);">👜<button class="add-btn" onclick="addCart()">Add to Cart</button></div>
+      <div class="product-info"><h3>Mini Leather Tote</h3><p>Caramel Tan · One Size</p><div class="product-price">₹3,599</div></div>
+    </div>
+    <div class="product-card" data-cat="accessories">
+      <div class="product-img" style="background:linear-gradient(135deg,#f0e8f4,#dcc8e8);">💍<span class="product-badge new">New</span><button class="add-btn" onclick="addCart()">Add to Cart</button></div>
+      <div class="product-info"><h3>Gold Chain Necklace</h3><p>14K Gold Plated</p><div class="product-price">₹2,199</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div>
+    <p class="sec-label" style="color:var(--gold);">Our Philosophy</p>
+    <h2>Fashion with <em>intention.</em> Quality with conscience.</h2>
+    <p>Lumière was founded on one belief — that great fashion doesn't have to compromise on ethics or quality. Every piece is thoughtfully designed, crafted from sustainable fabrics, and built to outlast trends.</p>
+    <p>We work directly with artisans across India to bring you timeless pieces at honest prices.</p>
+    <a href="#collections" class="btn-gold">Shop Collection</a>
+  </div>
+  <div class="about-stat-grid">
+    <div class="about-stat"><strong>500+</strong><span>Styles</span></div>
+    <div class="about-stat"><strong>4.8★</strong><span>Rating</span></div>
+    <div class="about-stat"><strong>12K+</strong><span>Happy Customers</span></div>
+    <div class="about-stat"><strong>100%</strong><span>Ethical</span></div>
+  </div>
+</section>
+
+<footer id="contact">
+  <p>© 2025 <a href="#">Lumière Fashion</a> · Website by <a href="/">Vexora</a> · <a href="/">← Back to Portfolio</a></p>
+  <p style="margin-top:8px;color:#aaa;">📍 Patiala · ✉️ hello@lumiere.in · 📞 +91 82641 57603</p>
+</footer>
+
+<script>
+let cart=0;
+function addCart(){cart++;document.getElementById('cartCount').textContent=cart;}
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+function filterProducts(cat,el){
+  document.querySelectorAll('.filt').forEach(f=>f.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.product-card').forEach(c=>{
+    c.classList.toggle('hidden',cat!=='all'&&c.dataset.cat!==cat);
+  });
+}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+</script>
+</body>
+</html>
